@@ -9,3 +9,6 @@ RUN groupadd --gid $SFTP_GID sftp \
 	&& useradd --uid $SFTP_UID --gid $SFTP_GID \
 	--home-dir $SFTP_HOME --no-create-home \
 	sftp
+
+# Install SSH/SFTP daemon.
+RUN apt-get update && apt-get install --no-install-recommends --no-install-suggests -y openssh-server
