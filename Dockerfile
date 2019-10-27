@@ -17,3 +17,7 @@ RUN apt-get update \
 
 # Configure SSH/SFTP daemon.
 COPY sshd_config /etc/ssh/
+
+# Install SSH host keys.
+VOLUME ["/etc/ssh/host_keys"]
+VOLUME ["/etc/ssh/authorized_keys"]
