@@ -14,3 +14,6 @@ RUN groupadd --gid $SFTP_GID sftp \
 RUN apt-get update \
 	&& apt-get install --no-install-recommends --no-install-suggests -y openssh-server \
 	&& rm -f /etc/ssh/ssh_host_*_key*
+
+# Configure SSH/SFTP daemon.
+COPY sshd_config /etc/ssh/
