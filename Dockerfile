@@ -14,19 +14,20 @@ RUN set -x \
 	&& echo 'sftp:*' | chpasswd -e
 
 # Install SSH/SFTP daemon.
-RUN apk --no-cache add openssh-server openssh-sftp-server \
-	&& mkdir /etc/ssh/host_keys \
-	&& mkdir /etc/ssh/authorized_keys \
+RUN set -eux; \
+	apk --no-cache add openssh-server openssh-sftp-server; \
+	mkdir /etc/ssh/host_keys; \
+	mkdir /etc/ssh/authorized_keys; \
 	\
-	&& > /etc/ssh/sftp.authorized_keys \
-	&& chown root:sftp /etc/ssh/sftp.authorized_keys \
-	&& chmod 0640 /etc/ssh/sftp.authorized_keys \
+	> /etc/ssh/sftp.authorized_keys; \
+	chown root:sftp /etc/ssh/sftp.authorized_keys; \
+	chmod 0640 /etc/ssh/sftp.authorized_keys; \
 	\
 # Create SFTP area; the top directory must be owned by root and have mode 755 in
 # order to use chroot.
-	mkdir -p /srv/sftp/data \
-	&& chmod 0755 /srv/sftp \
-	&& chown sftp:sftp /srv/sftp/data
+	mkdir -p /srv/sftp/data; \
+	chmod 0755 /srv/sftp; \
+	chown sftp:sftp /srv/sftp/data;
 
 # Configure SSH/SFTP daemon.
 COPY sshd_config /etc/ssh/
