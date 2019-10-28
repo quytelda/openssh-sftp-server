@@ -1,0 +1,4 @@
+# SSH Keys
+*.pub
+authorized_keys
+ssh_host_*_key*
