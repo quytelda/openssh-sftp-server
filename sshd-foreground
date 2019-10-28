@@ -9,4 +9,8 @@ for key in /etc/ssh/host_keys/ssh_host_{dsa,ecdsa,ed25519,rsa}_key; do
 done
 ssh-keygen -A
 
+# Install authorized login keys from mounted volume.
+find "${AUTHORIZED_KEYS_VOLUME}" -maxdepth 1 -type f -name "*.pub" \
+    | xargs cat > /etc/ssh/sftp.authorized_keys
+
 exec /usr/sbin/sshd -D "$@"

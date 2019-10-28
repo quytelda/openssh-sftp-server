@@ -13,7 +13,11 @@ RUN set -x \
 # Install SSH/SFTP daemon.
 RUN apk --no-cache add openssh-server openssh-sftp-server \
 	&& mkdir /etc/ssh/host_keys \
-	&& mkdir /etc/ssh/authorized_keys
+	&& mkdir /etc/ssh/authorized_keys \
+	\
+	&& > /etc/ssh/sftp.authorized_keys \
+	&& chown root:sftp /etc/ssh/sftp.authorized_keys \
+	&& chmod 0640 /etc/ssh/sftp.authorized_keys
 
 # Create SFTP area.
 # The top directory must be owned by root and have mode 755
