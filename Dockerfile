@@ -20,12 +20,11 @@ RUN apk --no-cache add openssh-server openssh-sftp-server \
 	\
 	&& > /etc/ssh/sftp.authorized_keys \
 	&& chown root:sftp /etc/ssh/sftp.authorized_keys \
-	&& chmod 0640 /etc/ssh/sftp.authorized_keys
-
-# Create SFTP area.
-# The top directory must be owned by root and have mode 755
-# in order to use chroot.
-RUN mkdir -p /srv/sftp/data \
+	&& chmod 0640 /etc/ssh/sftp.authorized_keys \
+	\
+# Create SFTP area; the top directory must be owned by root and have mode 755 in
+# order to use chroot.
+	mkdir -p /srv/sftp/data \
 	&& chmod 0755 /srv/sftp \
 	&& chown sftp:sftp /srv/sftp/data
 
