@@ -30,3 +30,6 @@ VOLUME ["/etc/ssh/host_keys"]
 VOLUME ["/etc/ssh/authorized_keys"]
 VOLUME ["/srv/sftp/data"]
 EXPOSE 22/tcp
+
+COPY sshd-foreground /usr/local/bin/
+ENTRYPOINT ["sshd-foreground"]

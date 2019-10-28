@@ -1,0 +1,12 @@
+#!/bin/sh
+set -eux
+
+# Install SSH host keys from mounted volume.
+for key in /etc/ssh/host_keys/ssh_host_{dsa,ecdsa,ed25519,rsa}_key; do
+    [[ -f "${key}" && -f "${key}.pub" ]] \
+    && install --owner=root --group=root --mode=0600 "${key}" /etc/ssh/ \
+    && install --owner=root --group=root --mode=0644 "${key}.pub" /etc/ssh/
+done
+ssh-keygen -A
+
+exec /usr/sbin/sshd -D "$@"
