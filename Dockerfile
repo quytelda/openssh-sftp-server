@@ -1,18 +1,19 @@
-FROM debian
+FROM alpine
 
 ENV SFTP_UID=1000
 ENV SFTP_GID=1000
 
 # Set up a dedicated user for SFTP access.
-RUN groupadd --gid $SFTP_GID sftp \
-	&& useradd --uid $SFTP_UID --gid $SFTP_GID \
-	--home-dir /data --no-create-home \
-	sftp
+# Disable password logins for this user, but don't lock the account.
+RUN set -x \
+	&& addgroup -g $SFTP_GID sftp \
+	&& adduser -D -h /data -H -s /sbin/nologin -G sftp -u $SFTP_UID sftp \
+	&& echo 'sftp:*' | chpasswd -e
 
 # Install SSH/SFTP daemon.
-RUN apt-get update \
-	&& apt-get install --no-install-recommends --no-install-suggests -y openssh-server \
-	&& rm -f /etc/ssh/ssh_host_*_key*
+RUN apk --no-cache add openssh-server openssh-sftp-server \
+	&& mkdir /etc/ssh/host_keys \
+	&& mkdir /etc/ssh/authorized_keys
 
 # Create SFTP area.
 # The top directory must be owned by root and have mode 755
