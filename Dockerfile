@@ -29,3 +29,4 @@ COPY sshd_config /etc/ssh/
 VOLUME ["/etc/ssh/host_keys"]
 VOLUME ["/etc/ssh/authorized_keys"]
 VOLUME ["/srv/sftp/data"]
+EXPOSE 22/tcp
