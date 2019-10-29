@@ -2,14 +2,14 @@
 set -eux
 
 # Install SSH host keys from mounted volume.
-find "${HOST_KEYS_VOLUME}" -maxdepth 1 -type f -name "ssh_host_*_key" \
+find "/host_keys" -maxdepth 1 -type f -name "ssh_host_*_key" \
     | xargs -r install -o root -g root -m 600 -t /etc/ssh
-find "${HOST_KEYS_VOLUME}" -maxdepth 1 -type f -name "ssh_host_*_key.pub" \
+find "/host_keys" -maxdepth 1 -type f -name "ssh_host_*_key.pub" \
     | xargs -r install -o root -g root -m 644 -t /etc/ssh
 ssh-keygen -A
 
 # Install authorized login keys from mounted volume.
-find "${AUTHORIZED_KEYS_VOLUME}" -maxdepth 1 -type f -name "*.pub" \
+find "/authorized_keys" -maxdepth 1 -type f -name "*.pub" \
     | xargs cat > /etc/ssh/sftp.authorized_keys
 
 exec /usr/sbin/sshd -D "$@"

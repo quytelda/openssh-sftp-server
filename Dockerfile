@@ -3,9 +3,6 @@ FROM alpine
 ENV SFTP_UID=1000
 ENV SFTP_GID=1000
 
-ENV HOST_KEYS_VOLUME="/etc/ssh/host_keys"
-ENV AUTHORIZED_KEYS_VOLUME="/etc/ssh/authorized_keys"
-
 # Set up a dedicated user for SFTP access.
 # Disable password logins for this user, but don't lock the account.
 RUN set -x \
@@ -16,8 +13,6 @@ RUN set -x \
 # Install SSH/SFTP daemon.
 RUN set -eux; \
 	apk --no-cache add openssh-server openssh-sftp-server; \
-	mkdir /etc/ssh/host_keys; \
-	mkdir /etc/ssh/authorized_keys; \
 	\
 	> /etc/ssh/sftp.authorized_keys; \
 	chown root:sftp /etc/ssh/sftp.authorized_keys; \
@@ -33,8 +28,8 @@ RUN set -eux; \
 COPY sshd_config /etc/ssh/
 
 # Install SSH host keys.
-VOLUME "${HOST_KEYS_VOLUME}"
-VOLUME "${AUTHORIZED_KEYS_VOLUME}"
+VOLUME ["/host_keys"]
+VOLUME ["/authorized_keys"]
 VOLUME ["/srv/sftp/data"]
 EXPOSE 22/tcp
 
