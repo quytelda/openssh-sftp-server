@@ -10,9 +10,10 @@ RUN set -x \
 	&& adduser -D -h /data -H -s /sbin/nologin -G sftp -u $SFTP_UID sftp \
 	&& echo 'sftp:*' | chpasswd -e
 
-# Install SSH/SFTP daemon.
 RUN set -eux; \
+# Install SSH/SFTP daemon.
 	apk --no-cache add openssh-server openssh-sftp-server; \
+	mkdir /etc/ssh/host_keys; \
 	\
 # Create SFTP area; the top directory must be owned by root and have mode 755 in
 # order to use chroot.
@@ -23,10 +24,9 @@ RUN set -eux; \
 # Configure SSH/SFTP daemon.
 COPY sshd_config /etc/ssh/
 
-# Install SSH host keys.
-VOLUME ["/host_keys"]
-VOLUME ["/authorized_keys"]
-VOLUME ["/srv/sftp/data"]
+VOLUME ["/etc/ssh/host_keys/"]
+VOLUME ["/etc/ssh/sftp.authorized_keys"] # Could be a file or directory
+VOLUME ["/srv/sftp/data/"]
 EXPOSE 22/tcp
 
 COPY sshd-foreground /usr/local/bin/
