@@ -1,0 +1,20 @@
+#!/bin/sh
+
+# sshd_config(5):
+# ...
+# If no arguments are specified then the username of the target user is used.
+# The program should produce on standard output zero or more lines of
+# authorized_keys output (see AUTHORIZED_KEYS in sshd(8)).
+username="${1}"
+
+# Does this user exist?
+id -u "${username}" >/dev/null || exit $?
+
+path="/etc/ssh/${username}.authorized_keys"
+if [[ -d "${path}" ]]; then
+    # If authorized keys are provided in a directory, concatenate them.
+    find "${path}" -maxdepth 1 -type f -name "*.pub" | xargs cat
+elif [[ -f "${path}" ]]; then
+    # If authorized keys are provided in a single file, just use that.
+    cat "${path}";
+fi

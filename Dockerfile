@@ -30,4 +30,5 @@ VOLUME ["/srv/sftp/data/"]
 EXPOSE 22/tcp
 
 COPY sshd-foreground /usr/local/bin/
+COPY ssh-authorized-keys /usr/local/bin/
 ENTRYPOINT ["sshd-foreground"]
