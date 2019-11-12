@@ -7,14 +7,15 @@
 # authorized_keys output (see AUTHORIZED_KEYS in sshd(8)).
 username="${1}"
 
-# Does this user exist?
+# Does this username exist?  If not, quit.
 id -u "${username}" >/dev/null || exit $?
 
 path="/etc/ssh/${username}.authorized_keys"
 if [[ -d "${path}" ]]; then
     # If authorized keys are provided in a directory, concatenate them.
+    # Assume all .pub files in the directory are authorized login keys.
     find "${path}" -maxdepth 1 -type f -name "*.pub" | xargs cat
 elif [[ -f "${path}" ]]; then
-    # If authorized keys are provided in a single file, just use that.
+    # If authorized keys are provided in a single file, just forward it.
     cat "${path}";
 fi

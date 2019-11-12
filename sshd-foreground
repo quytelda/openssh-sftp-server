@@ -1,6 +1,6 @@
 #!/bin/sh
 
-echo "Generating SSH host keys..."
+echo "Generating any needed SSH host keys..."
 # ssh-keygen(1):
 # For each of the key types (rsa, dsa, ecdsa and ed25519) for which host keys do not exist,
 # generate the host keys with the default key file path, an empty passphrase, default bits
