@@ -13,7 +13,9 @@ RUN set -eux; \
 RUN set -eux; \
 # Install SSH/SFTP daemon.
     apk --no-cache add openssh-server openssh-sftp-server; \
+    \
     mkdir /etc/ssh/host_keys; \
+    mkdir /etc/ssh/authorized_keys; \
     \
 # Create SFTP area; the top directory must be owned by root and have mode 755 in
 # order to use chroot.
@@ -25,8 +27,8 @@ COPY sshd_config /etc/ssh/
 COPY sshd-foreground /usr/local/bin/
 COPY ssh-authorized-keys /usr/local/bin/
 
-VOLUME "/etc/ssh/host_keys"
-VOLUME "/etc/ssh/sftp.authorized_keys"
+VOLUME /etc/ssh/host_keys
+VOLUME /etc/ssh/authorized_keys
 EXPOSE 22/tcp
 
 ENTRYPOINT ["sshd-foreground"]

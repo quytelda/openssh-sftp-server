@@ -10,7 +10,7 @@ username="${1}"
 # Does this username exist?  If not, quit.
 id -u "${username}" >/dev/null || exit $?
 
-path="/etc/ssh/${username}.authorized_keys"
+path="/etc/ssh/authorized_keys/${username}"
 if [[ -d "${path}" ]]; then
     # If authorized keys are provided in a directory, concatenate them.
     # Assume all .pub files in the directory are authorized login keys.
