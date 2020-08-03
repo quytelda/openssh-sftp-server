@@ -31,4 +31,4 @@ VOLUME /etc/ssh/host_keys
 VOLUME /etc/ssh/authorized_keys
 EXPOSE 22/tcp
 
-ENTRYPOINT ["sshd-foreground"]
+ENTRYPOINT ["/usr/local/bin/sshd-foreground"]
