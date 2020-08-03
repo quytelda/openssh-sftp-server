@@ -1,4 +1,4 @@
-FROM alpine:latest
+FROM docker.io/library/alpine:latest
 
 ENV SFTP_UID=1000
 ENV SFTP_GID=1000
