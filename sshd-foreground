@@ -1,13 +1,15 @@
 #!/bin/sh
 
-echo "Generating any needed SSH host keys..."
+echo "Enumerating SSH host keys..."
 # ssh-keygen(1):
 # For each of the key types (rsa, dsa, ecdsa and ed25519) for which host keys do not exist,
 # generate the host keys with the default key file path, an empty passphrase, default bits
 # for the key type, and default comment.
 for alg in 'rsa' 'dsa' 'ecdsa' 'ed25519'; do
     keyfile="/etc/ssh/host_keys/ssh_host_${alg}_key"
-    [[ -e "${keyfile}" ]] || ssh-keygen -f "${keyfile}" -N '' -t "${alg}"
+    [[ -e "${keyfile}" ]] \
+	&& ssh-keygen -f "${keyfile}" -l \
+	|| ssh-keygen -f "${keyfile}" -N '' -t "${alg}"
 done
 
 exec /usr/sbin/sshd -D -e "$@"
