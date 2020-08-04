@@ -10,4 +10,4 @@ for alg in 'rsa' 'dsa' 'ecdsa' 'ed25519'; do
     [[ -e "${keyfile}" ]] || ssh-keygen -f "${keyfile}" -N '' -t "${alg}"
 done
 
-exec /usr/sbin/sshd -D "$@"
+exec /usr/sbin/sshd -D -e "$@"
