@@ -15,6 +15,7 @@
 #ListenAddress 0.0.0.0
 #ListenAddress ::
 
+# Host keys are in /etc/ssh/host_keys/.
 HostKey /etc/ssh/host_keys/ssh_host_rsa_key
 HostKey /etc/ssh/host_keys/ssh_host_ecdsa_key
 HostKey /etc/ssh/host_keys/ssh_host_ed25519_key
@@ -36,8 +37,8 @@ PermitRootLogin no
 
 #PubkeyAuthentication yes
 
-# The default is to check both .ssh/authorized_keys and .ssh/authorized_keys2
-# but this is overridden so installations will only check .ssh/authorized_keys
+# Don't look for authorized keys files.
+# Use ssh-authorized-keys to generate a list of authorized login keys instead.
 AuthorizedKeysFile none
 
 #AuthorizedPrincipalsFile none
@@ -53,7 +54,7 @@ AuthorizedKeysCommandUser nobody
 # Don't read the user's ~/.rhosts and ~/.shosts files
 #IgnoreRhosts yes
 
-# To disable tunneled clear text passwords, change to no here!
+# Disable tunneled clear text passwords.
 PasswordAuthentication no
 #PermitEmptyPasswords no
 
